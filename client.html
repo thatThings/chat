@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>node.js聊天室</title>
+    </head>
+<body>
+    <input type="text" id="mes"></input><br></br>
+    <input type="button" value="发送" id="send"></input>
+    <script type="text/javascript" src="https://cdn.bootcss.com/socket.io/1.7.4/socket.io.min.js"></script>
+    <script type="text/javascript">
+        var client = io.connect("/");//链接socket服务器
+        var omes = document.getElementById('mes'),
+            osend = document.getElementById('send');
+        
+        osend.onclick = function(){
+            var val = omes.value;//获取文本的内容消息
+            if(!val){
+                return;
+            }
+            
+            client.send(val);//客户端向服务端发送消息
+            omes.value = "";//发送后清空聊天框
+        }
+        client.on("message",function(data){
+                var p = document.createElement("p");
+            p.innerHTML = data;
+            document.body.appendChild(p);
+            });
+    </script>
+</body>
+</html>
